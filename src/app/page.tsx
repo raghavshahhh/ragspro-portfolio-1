@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { ArrowUpRight, Play, Pause, ChevronDown } from "lucide-react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { MessageCircle, ArrowUpRight, Zap, Brain, ShoppingCart, Check, Phone, Mail, MapPin, ExternalLink, ChevronRight, Play } from "lucide-react";
+import { ragsProContent } from "@/lib/utils";
 
-// Custom cursor component
+const WA_GREEN = "#25D366";
+
+// Custom cursor
 function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
   const outlineRef = useRef<HTMLDivElement>(null);
@@ -14,10 +17,7 @@ function CustomCursor() {
     const outline = outlineRef.current;
     if (!dot || !outline) return;
 
-    let mouseX = 0;
-    let mouseY = 0;
-    let outlineX = 0;
-    let outlineY = 0;
+    let mouseX = 0, mouseY = 0, outlineX = 0, outlineY = 0;
 
     const handleMouseMove = (e: MouseEvent) => {
       mouseX = e.clientX;
@@ -36,7 +36,6 @@ function CustomCursor() {
 
     window.addEventListener("mousemove", handleMouseMove);
     animateOutline();
-
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
@@ -65,9 +64,11 @@ function Navigation() {
       transition={{ duration: 0.8, delay: 0.5 }}
       className={`nav-fixed flex items-center justify-between ${scrolled ? "scrolled" : ""}`}
     >
-      <a href="#" className="text-xl font-bold tracking-tight">RAGS</a>
+      <a href="#" className="text-xl font-bold tracking-tight flex items-center gap-2">
+        <span className="text-[#25D366]">●</span> RAGS
+      </a>
       <div className="hidden md:flex items-center gap-8">
-        {["Work", "Services", "About", "Contact"].map((item) => (
+        {["Services", "Work", "Pricing", "About"].map((item) => (
           <a
             key={item}
             href={`#${item.toLowerCase()}`}
@@ -77,46 +78,23 @@ function Navigation() {
           </a>
         ))}
       </div>
-      <button className="btn-outline hidden md:block">
-        <span>Get in Touch</span>
-      </button>
+      <a
+        href={`https://wa.me/${ragsProContent.contact.phone.replace(/\D/g, "")}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="btn-outline hidden md:flex items-center gap-2"
+      >
+        <MessageCircle className="w-4 h-4" />
+        <span>Chat on WhatsApp</span>
+      </a>
     </motion.nav>
   );
 }
 
-// Hero with parallax slider
+// Hero with WhatsApp focus
 function Hero() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
-  const slides = [
-    {
-      title: "CRAFTING",
-      title2: "DIGITAL",
-      subtitle: "Exceptional by Design",
-      description: "Premium web development for visionary brands",
-    },
-    {
-      title: "BUILDING",
-      title2: "FUTURE",
-      subtitle: "Innovation First",
-      description: "AI-powered solutions that transform businesses",
-    },
-    {
-      title: "CREATING",
-      title2: "IMPACT",
-      subtitle: "Results Driven",
-      description: "50+ projects delivered with excellence",
-    },
-  ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, [slides.length]);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -127,175 +105,220 @@ function Hero() {
         y: (e.clientY - rect.top - rect.height / 2) / 50,
       });
     };
-
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   return (
-    <section ref={containerRef} className="relative h-screen overflow-hidden">
-      {/* Animated background layers */}
+    <section ref={containerRef} className="relative min-h-screen overflow-hidden flex items-center">
+      {/* Background Effects */}
       <div
         className="absolute inset-0 parallax-layer"
-        style={{
-          transform: `translate(${mousePos.x * 0.5}px, ${mousePos.y * 0.5}px)`,
-        }}
+        style={{ transform: `translate(${mousePos.x * 0.5}px, ${mousePos.y * 0.5}px)` }}
       >
-        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-white/[0.02] rounded-full blur-[100px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-white/[0.03] rounded-full blur-[80px]" />
+        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[#25D366]/5 rounded-full blur-[120px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#25D366]/3 rounded-full blur-[100px]" />
       </div>
 
-      {/* Gradient overlay */}
-      <div className="gradient-overlay" />
-
-      {/* Content */}
-      <div className="relative z-10 h-full flex flex-col justify-center px-6 md:px-12 lg:px-24">
-        <div className="max-w-[90vw]">
-          {slides.map((slide, index) => (
-            <div
-              key={index}
-              className={`absolute inset-0 flex flex-col justify-center transition-all duration-1000 ${
-                currentSlide === index ? "opacity-100" : "opacity-0 pointer-events-none"
-              }`}
-            >
-              {/* Subtitle */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={currentSlide === index ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="mb-6"
-              >
-                <span className="text-xs uppercase tracking-[0.3em] text-white/50">
-                  {slide.subtitle}
-                </span>
-              </motion.div>
-
-              {/* Main Title */}
-              <div
-                className="parallax-layer"
-                style={{
-                  transform: `translate(${mousePos.x * 2}px, ${mousePos.y * 2}px)`,
-                }}
-              >
-                <motion.h1
-                  initial={{ opacity: 0, y: 100 }}
-                  animate={currentSlide === index ? { opacity: 1, y: 0 } : { opacity: 0, y: 100 }}
-                  transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                  className="headline-xl text-white mb-2"
-                >
-                  {slide.title}
-                </motion.h1>
-                <motion.h1
-                  initial={{ opacity: 0, y: 100 }}
-                  animate={currentSlide === index ? { opacity: 1, y: 0 } : { opacity: 0, y: 100 }}
-                  transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  className="headline-xl text-stroke mb-8"
-                >
-                  {slide.title2}
-                </motion.h1>
-              </div>
-
-              {/* Description */}
-              <motion.p
-                initial={{ opacity: 0, y: 30 }}
-                animate={currentSlide === index ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="text-lg md:text-xl text-white/60 max-w-xl mb-12"
-              >
-                {slide.description}
-              </motion.p>
-
-              {/* CTA */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={currentSlide === index ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                transition={{ duration: 0.8, delay: 0.7 }}
-              >
-                <button className="btn-outline group">
-                  <span className="flex items-center gap-3">
-                    View Our Work
-                    <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                  </span>
-                </button>
-              </motion.div>
+      {/* WhatsApp Chat Mockup floating */}
+      <motion.div
+        className="absolute right-[5%] top-1/2 -translate-y-1/2 hidden xl:block"
+        initial={{ opacity: 0, x: 100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1, delay: 0.8 }}
+        style={{ transform: `translate(${mousePos.x * -2}px, ${mousePos.y * -2}px)` }}
+      >
+        <div className="w-[380px] bg-[#0B141A] rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
+          {/* Chat Header */}
+          <div className="bg-[#202C33] p-4 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center">
+              <MessageCircle className="w-5 h-5 text-white" />
             </div>
-          ))}
+            <div>
+              <div className="text-sm font-medium">RAGS Bot</div>
+              <div className="text-xs text-white/50">online</div>
+            </div>
+          </div>
+          {/* Chat Messages */}
+          <div className="p-4 space-y-3 min-h-[300px]">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.2 }}
+              className="bg-[#202C33] rounded-lg rounded-tl-none p-3 max-w-[85%]"
+            >
+              <p className="text-sm">Hello! 👋 Welcome to our store. How can I help you today?</p>
+              <span className="text-[10px] text-white/40 float-right mt-1">10:30 AM</span>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.8 }}
+              className="bg-[#005C4B] rounded-lg rounded-tr-none p-3 max-w-[85%] ml-auto"
+            >
+              <p className="text-sm">I want to order dog food</p>
+              <span className="text-[10px] text-white/40 float-right mt-1">10:31 AM</span>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 2.4 }}
+              className="bg-[#202C33] rounded-lg rounded-tl-none p-3 max-w-[85%]"
+            >
+              <p className="text-sm">Great choice! 🐕 Here&apos;s our menu:</p>
+              <div className="mt-2 space-y-2">
+                <div className="bg-white/5 rounded p-2 flex justify-between">
+                  <span className="text-xs">Premium Dog Food</span>
+                  <span className="text-xs text-[#25D366]">₹999</span>
+                </div>
+                <div className="bg-white/5 rounded p-2 flex justify-between">
+                  <span className="text-xs">Organic Treats</span>
+                  <span className="text-xs text-[#25D366]">₹499</span>
+                </div>
+              </div>
+              <span className="text-[10px] text-white/40 float-right mt-1">10:31 AM</span>
+            </motion.div>
+          </div>
+          {/* Input */}
+          <div className="bg-[#202C33] p-3 flex items-center gap-2">
+            <div className="flex-1 bg-[#2A3942] rounded-full px-4 py-2 text-sm text-white/50">Type a message...</div>
+            <div className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center">
+              <MessageCircle className="w-5 h-5 text-white" />
+            </div>
+          </div>
         </div>
+      </motion.div>
 
-        {/* Slide indicators */}
-        <div className="absolute bottom-12 left-6 md:left-12 lg:left-24 flex items-center gap-4">
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className={`h-[2px] transition-all duration-500 ${
-                currentSlide === index ? "w-12 bg-white" : "w-6 bg-white/30"
-              }`}
-            />
-          ))}
-        </div>
+      <div className="relative z-10 px-6 md:px-12 lg:px-24 max-w-4xl">
+        {/* Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mb-6"
+        >
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#25D366]/10 border border-[#25D366]/20 text-[#25D366] text-xs uppercase tracking-wider">
+            <span className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse" />
+            Now Accepting New Projects
+          </span>
+        </motion.div>
 
-        {/* Scroll indicator */}
+        {/* Main Headline */}
+        <motion.h1
+          initial={{ opacity: 0, y: 60 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="headline-xl mb-6"
+        >
+          Turn WhatsApp
+          <br />
+          <span className="text-[#25D366]">Conversations</span>
+          <br />
+          Into Revenue
+        </motion.h1>
+
+        {/* Description */}
+        <motion.p
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="text-lg md:text-xl text-white/60 max-w-xl mb-8"
+        >
+          AI-powered WhatsApp bots that handle sales, support, and automation
+          24/7 for your business. Built for founders who want to scale.
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="flex flex-wrap gap-4"
+        >
+          <a
+            href={`https://wa.me/${ragsProContent.contact.phone.replace(/\D/g, "")}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary flex items-center gap-2"
+          >
+            <MessageCircle className="w-5 h-5" />
+            <span>Start on WhatsApp</span>
+          </a>
+          <a href="#work" className="btn-outline flex items-center gap-2">
+            <Play className="w-4 h-4" />
+            <span>See Demo</span>
+          </a>
+        </motion.div>
+
+        {/* Trust badges */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="absolute bottom-12 right-6 md:right-12 lg:right-24"
+          transition={{ duration: 0.8, delay: 1 }}
+          className="mt-12 flex items-center gap-8"
         >
-          <div className="scroll-indicator">
-            <span>Scroll</span>
-            <div className="scroll-line" />
+          <div>
+            <div className="text-2xl font-bold text-[#25D366]">25+</div>
+            <div className="text-xs text-white/40">Bots Delivered</div>
+          </div>
+          <div className="w-px h-10 bg-white/10" />
+          <div>
+            <div className="text-2xl font-bold text-[#25D366]">3x</div>
+            <div className="text-xs text-white/40">Avg. Sales Boost</div>
+          </div>
+          <div className="w-px h-10 bg-white/10" />
+          <div>
+            <div className="text-2xl font-bold text-[#25D366]">24/7</div>
+            <div className="text-xs text-white/40">Auto Support</div>
           </div>
         </motion.div>
       </div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+        className="absolute bottom-12 left-1/2 -translate-x-1/2"
+      >
+        <div className="scroll-indicator">
+          <span>Scroll</span>
+          <div className="scroll-line" />
+        </div>
+      </motion.div>
     </section>
   );
 }
 
-// Stats section with counter animation
+// Stats Section
 function Stats() {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
+      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
       { threshold: 0.3 }
     );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
+    if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
 
-  const stats = [
-    { value: "50+", label: "Projects Delivered" },
-    { value: "30+", label: "Happy Clients" },
-    { value: "5+", label: "Years Experience" },
-    { value: "100%", label: "Client Satisfaction" },
-  ];
-
   return (
-    <section ref={ref} className="py-32 px-6 md:px-12 lg:px-24 border-t border-white/10">
+    <section ref={ref} className="py-24 px-6 md:px-12 lg:px-24 border-t border-white/10">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0">
-          {stats.map((stat, index) => (
-            <div
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          {ragsProContent.about.stats.map((stat, index) => (
+            <motion.div
               key={stat.label}
-              className={`stat-item text-center md:text-left ${isVisible ? "visible" : ""}`}
-              style={{ transitionDelay: `${index * 0.1}s` }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={isVisible ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="text-center"
             >
-              <div className="counter mb-2">{stat.value}</div>
-              <div className="text-xs uppercase tracking-widest text-white/50">
-                {stat.label}
-              </div>
-            </div>
+              <div className="text-4xl md:text-5xl font-bold text-[#25D366] mb-2">{stat.value}</div>
+              <div className="text-xs uppercase tracking-widest text-white/50">{stat.label}</div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -303,30 +326,9 @@ function Stats() {
   );
 }
 
-// Services section with hover effects
+// Services Section
 function Services() {
-  const services = [
-    {
-      num: "01",
-      title: "Web Development",
-      description: "Custom Next.js applications with premium animations and seamless user experiences.",
-    },
-    {
-      num: "02",
-      title: "AI Integration",
-      description: "Intelligent features powered by cutting-edge AI to automate and enhance your workflows.",
-    },
-    {
-      num: "03",
-      title: "UI/UX Design",
-      description: "Pixel-perfect interfaces that users love, designed with precision and purpose.",
-    },
-    {
-      num: "04",
-      title: "Automation",
-      description: "Streamlined workflows with n8n, Make, and custom automation solutions.",
-    },
-  ];
+  const services = ragsProContent.services;
 
   return (
     <section id="services" className="py-32 px-6 md:px-12 lg:px-24">
@@ -336,15 +338,13 @@ function Services() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mb-20"
+          className="mb-16 text-center"
         >
-          <span className="text-xs uppercase tracking-[0.3em] text-white/50 block mb-4">
-            What We Do
-          </span>
-          <h2 className="headline-lg gradient-text">Services</h2>
+          <span className="text-xs uppercase tracking-[0.3em] text-[#25D366] block mb-4">What We Do</span>
+          <h2 className="headline-lg">WhatsApp Solutions</h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-px bg-white/10">
+        <div className="grid md:grid-cols-2 gap-6">
           {services.map((service, index) => (
             <motion.div
               key={service.title}
@@ -352,18 +352,25 @@ function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="service-card bg-[#050505] group cursor-pointer"
+              className="service-card bg-[#0B141A] border border-white/10 rounded-2xl p-8 group hover:border-[#25D366]/30 transition-all duration-500"
             >
-              <span className="text-xs text-white/30 block mb-8">{service.num}</span>
-              <h3 className="text-2xl md:text-3xl font-bold mb-4 group-hover:text-white/80 transition-colors">
-                {service.title}
-              </h3>
-              <p className="text-white/50 text-sm leading-relaxed max-w-md">
-                {service.description}
-              </p>
-              <div className="mt-8 flex items-center gap-2 text-white/30 group-hover:text-white/60 transition-colors">
-                <span className="text-xs uppercase tracking-widest">Learn More</span>
-                <ArrowUpRight className="w-4 h-4" />
+              <div className="flex items-start justify-between mb-6">
+                <span className="text-xs text-[#25D366]/60">0{index + 1}</span>
+                <div className="w-12 h-12 rounded-xl bg-[#25D366]/10 flex items-center justify-center group-hover:bg-[#25D366]/20 transition-colors">
+                  {service.icon === "MessageCircle" && <MessageCircle className="w-6 h-6 text-[#25D366]" />}
+                  {service.icon === "Zap" && <Zap className="w-6 h-6 text-[#25D366]" />}
+                  {service.icon === "Brain" && <Brain className="w-6 h-6 text-[#25D366]" />}
+                  {service.icon === "ShoppingCart" && <ShoppingCart className="w-6 h-6 text-[#25D366]" />}
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold mb-3 group-hover:text-[#25D366] transition-colors">{service.title}</h3>
+              <p className="text-white/50 mb-6 leading-relaxed">{service.description}</p>
+              <div className="flex flex-wrap gap-2">
+                {(service as any).features?.map((feature: string) => (
+                  <span key={feature} className="px-3 py-1 rounded-full bg-white/5 text-xs text-white/60">
+                    {feature}
+                  </span>
+                ))}
               </div>
             </motion.div>
           ))}
@@ -373,77 +380,139 @@ function Services() {
   );
 }
 
-// Portfolio section with horizontal scroll
+// Portfolio Section
 function Portfolio() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
-  const springX = useSpring(x, { stiffness: 100, damping: 30 });
-
-  const projects = [
-    { title: "LAW AI", category: "Legal Tech", year: "2024" },
-    { title: "Agency OS", category: "Business", year: "2024" },
-    { title: "RAGS Pro", category: "Extension", year: "2024" },
-    { title: "E-Commerce", category: "Shopify", year: "2023" },
-    { title: "Portfolio X", category: "Creative", year: "2023" },
-    { title: "SaaS Platform", category: "Technology", year: "2023" },
-  ];
-
   return (
-    <section id="work" ref={containerRef} className="py-32 overflow-hidden">
-      <div className="px-6 md:px-12 lg:px-24 mb-16">
+    <section id="work" className="py-32 px-6 md:px-12 lg:px-24 bg-[#0B141A]/50">
+      <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
+          className="mb-16"
         >
-          <span className="text-xs uppercase tracking-[0.3em] text-white/50 block mb-4">
-            Selected Work
-          </span>
-          <h2 className="headline-lg gradient-text">Portfolio</h2>
+          <span className="text-xs uppercase tracking-[0.3em] text-[#25D366] block mb-4">Our Work</span>
+          <h2 className="headline-lg">Featured Projects</h2>
         </motion.div>
-      </div>
 
-      <motion.div style={{ x: springX }} className="flex gap-6 px-6 md:px-12 lg:px-24">
-        {projects.map((project, index) => (
-          <motion.div
-            key={project.title}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
-            className="portfolio-card flex-shrink-0 w-[80vw] md:w-[50vw] lg:w-[35vw] aspect-[4/3] bg-white/5 cursor-pointer group"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="absolute inset-0 flex flex-col justify-end p-8">
-              <span className="text-xs text-white/40 mb-2">{project.category}</span>
-              <h3 className="text-2xl md:text-3xl font-bold">{project.title}</h3>
-              <span className="text-xs text-white/30 mt-2">{project.year}</span>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
+        <div className="grid md:grid-cols-2 gap-8">
+          {ragsProContent.portfolio.map((project, index) => (
+            <motion.div
+              key={project.title}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="group relative bg-[#050505] rounded-2xl overflow-hidden border border-white/10 hover:border-[#25D366]/30 transition-all duration-500"
+            >
+              <div className="aspect-video bg-gradient-to-br from-[#25D366]/10 to-transparent flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-6xl font-bold text-white/5">{project.title[0]}</div>
+                </div>
+              </div>
+              <div className="p-8">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-xs text-[#25D366]">{project.category}</span>
+                  <ExternalLink className="w-4 h-4 text-white/30 group-hover:text-[#25D366] transition-colors" />
+                </div>
+                <h3 className="text-2xl font-bold mb-3">{project.title}</h3>
+                <p className="text-white/50 mb-6">{project.description}</p>
+                {(project as any).stats && (
+                  <div className="flex gap-6">
+                    {Object.entries((project as any).stats).map(([key, value]) => (
+                      <div key={key}>
+                        <div className="text-lg font-bold text-[#25D366]">{value as string}</div>
+                        <div className="text-xs text-white/40 capitalize">{key}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
 
-// About section with parallax
-function About() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-
+// Pricing Section
+function Pricing() {
   return (
-    <section id="about" ref={ref} className="py-32 px-6 md:px-12 lg:px-24 relative overflow-hidden">
+    <section id="pricing" className="py-32 px-6 md:px-12 lg:px-24">
+      <div className="max-w-7xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="mb-16 text-center"
+        >
+          <span className="text-xs uppercase tracking-[0.3em] text-[#25D366] block mb-4">Pricing</span>
+          <h2 className="headline-lg">Simple Pricing</h2>
+          <p className="text-white/50 mt-4 max-w-xl mx-auto">One-time payment. No monthly fees. You own the bot.</p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {ragsProContent.pricing?.map((plan, index) => (
+            <motion.div
+              key={plan.name}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className={`relative rounded-2xl p-8 ${
+                plan.popular
+                  ? "bg-[#25D366]/10 border-2 border-[#25D366]"
+                  : "bg-[#0B141A] border border-white/10"
+              }`}
+            >
+              {plan.popular && (
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-[#25D366] rounded-full text-xs font-medium">
+                  Most Popular
+                </div>
+              )}
+              <div className="mb-6">
+                <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
+                <p className="text-sm text-white/50">{plan.description}</p>
+              </div>
+              <div className="mb-6">
+                <span className="text-4xl font-bold">{plan.price}</span>
+                <span className="text-white/50 text-sm ml-2">/{plan.period}</span>
+              </div>
+              <ul className="space-y-3 mb-8">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="flex items-center gap-3 text-sm text-white/70">
+                    <Check className="w-4 h-4 text-[#25D366] flex-shrink-0" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href={`https://wa.me/${ragsProContent.contact.phone.replace(/\D/g, "")}?text=Hi! I'm interested in the ${plan.name} plan`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`block text-center py-4 rounded-xl font-medium transition-all ${
+                  plan.popular
+                    ? "bg-[#25D366] text-black hover:bg-[#25D366]/90"
+                    : "bg-white/10 text-white hover:bg-white/20"
+                }`}
+              >
+                {plan.cta}
+              </a>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// About Section
+function About() {
+  return (
+    <section id="about" className="py-32 px-6 md:px-12 lg:px-24 border-t border-white/10">
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <motion.div
@@ -452,37 +521,33 @@ function About() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <span className="text-xs uppercase tracking-[0.3em] text-white/50 block mb-4">
-              About Us
-            </span>
-            <h2 className="headline-lg gradient-text mb-8">
-              Building the Future
-            </h2>
-            <p className="text-white/60 text-lg leading-relaxed mb-6">
-              We&apos;re a team of developers, designers, and AI enthusiasts creating
-              premium digital experiences that captivate, convert, and scale.
-            </p>
-            <p className="text-white/40 leading-relaxed mb-8">
-              Based in Delhi, India, we work with clients worldwide to deliver
-              exceptional results. Every project is an opportunity to push boundaries
-              and create something extraordinary.
-            </p>
-            <button className="btn-outline">
-              <span>Learn More About Us</span>
-            </button>
+            <span className="text-xs uppercase tracking-[0.3em] text-[#25D366] block mb-4">About Us</span>
+            <h2 className="headline-lg mb-6">{ragsProContent.about.title}</h2>
+            <p className="text-white/60 text-lg leading-relaxed mb-6">{ragsProContent.about.description}</p>
+            <div className="flex flex-wrap gap-4">
+              {["WhatsApp API", "AI Integration", "Business Automation", "E-Commerce"].map((tag) => (
+                <span key={tag} className="px-4 py-2 rounded-full bg-[#25D366]/10 text-[#25D366] text-sm">
+                  {tag}
+                </span>
+              ))}
+            </div>
           </motion.div>
 
           <motion.div
-            style={{ y }}
-            className="relative aspect-square bg-white/5"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="relative"
           >
-            <div className="absolute inset-4 border border-white/10" />
-            <div className="absolute inset-8 flex items-center justify-center">
+            <div className="aspect-square bg-[#0B141A] rounded-2xl border border-white/10 p-8 flex items-center justify-center">
               <div className="text-center">
-                <div className="text-8xl font-bold text-white/10 mb-4">R</div>
-                <div className="text-xs uppercase tracking-[0.3em] text-white/30">
-                  RAGS Pro
+                <div className="w-24 h-24 rounded-full bg-[#25D366]/10 flex items-center justify-center mx-auto mb-6">
+                  <MessageCircle className="w-12 h-12 text-[#25D366]" />
                 </div>
+                <div className="text-2xl font-bold mb-2">RAGS</div>
+                <div className="text-sm text-white/50">WhatsApp Automation Agency</div>
+                <div className="text-xs text-white/30 mt-4">Delhi, India</div>
               </div>
             </div>
           </motion.div>
@@ -492,10 +557,10 @@ function About() {
   );
 }
 
-// Contact section
+// Contact Section
 function Contact() {
   return (
-    <section id="contact" className="py-32 px-6 md:px-12 lg:px-24 border-t border-white/10">
+    <section id="contact" className="py-32 px-6 md:px-12 lg:px-24 bg-[#0B141A]">
       <div className="max-w-4xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 60 }}
@@ -503,53 +568,44 @@ function Contact() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <span className="text-xs uppercase tracking-[0.3em] text-white/50 block mb-4">
-            Get in Touch
-          </span>
-          <h2 className="footer-cta mb-8">
-            Let&apos;s Build Something<br />
-            <span className="text-stroke">Exceptional</span>
+          <span className="text-xs uppercase tracking-[0.3em] text-[#25D366] block mb-4">Get Started</span>
+          <h2 className="headline-lg mb-6">
+            Ready to Automate
+            <br />
+            <span className="text-[#25D366]">Your Business?</span>
           </h2>
           <p className="text-white/50 mb-12 max-w-xl mx-auto">
-            Ready to start your next project? We&apos;d love to hear from you.
-            Let&apos;s create something amazing together.
+            Let&apos;s build a WhatsApp bot that works 24/7 for your business.
+            Get your first demo in 48 hours.
           </p>
-          <button className="btn-outline text-lg px-12 py-5">
-            <span className="flex items-center gap-3">
-              Start Your Project
-              <ArrowUpRight className="w-5 h-5" />
-            </span>
-          </button>
-        </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="mt-24 pt-12 border-t border-white/10"
-        >
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="text-left">
-              <div className="text-xs uppercase tracking-widest text-white/30 mb-2">Email</div>
-              <a href="mailto:hello@ragspro.com" className="text-white hover:text-white/70 transition-colors">
-                hello@ragspro.com
-              </a>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <a
+              href={`https://wa.me/${ragsProContent.contact.phone.replace(/\D/g, "")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary inline-flex items-center justify-center gap-2 text-lg px-8 py-4"
+            >
+              <MessageCircle className="w-5 h-5" />
+              <span>Chat on WhatsApp</span>
+            </a>
+            <a
+              href={`mailto:${ragsProContent.contact.email}`}
+              className="btn-outline inline-flex items-center justify-center gap-2 px-8 py-4"
+            >
+              <Mail className="w-5 h-5" />
+              <span>Send Email</span>
+            </a>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-white/50">
+            <div className="flex items-center gap-2">
+              <Phone className="w-4 h-4" />
+              <span>{ragsProContent.contact.phone}</span>
             </div>
-            <div className="text-left">
-              <div className="text-xs uppercase tracking-widest text-white/30 mb-2">Location</div>
-              <span className="text-white">Delhi, India</span>
-            </div>
-            <div className="flex gap-6">
-              {["Twitter", "LinkedIn", "GitHub"].map((social) => (
-                <a
-                  key={social}
-                  href="#"
-                  className="text-xs uppercase tracking-widest text-white/50 hover:text-white transition-colors"
-                >
-                  {social}
-                </a>
-              ))}
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4" />
+              <span>{ragsProContent.contact.location}</span>
             </div>
           </div>
         </motion.div>
@@ -561,27 +617,45 @@ function Contact() {
 // Footer
 function Footer() {
   return (
-    <footer className="py-8 px-6 md:px-12 lg:px-24 border-t border-white/10">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        <span className="text-sm text-white/40">© 2024 RAGS Pro. All rights reserved.</span>
-        <span className="text-xs uppercase tracking-widest text-white/30">
-          Crafted with precision
-        </span>
+    <footer className="py-12 px-6 md:px-12 lg:px-24 border-t border-white/10">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-2">
+            <span className="text-[#25D366]">●</span>
+            <span className="font-bold">RAGS</span>
+            <span className="text-white/40">| WhatsApp Automation Agency</span>
+          </div>
+          <div className="flex items-center gap-6">
+            {["Twitter", "LinkedIn", "GitHub"].map((social) => (
+              <a
+                key={social}
+                href="#"
+                className="text-xs uppercase tracking-widest text-white/40 hover:text-[#25D366] transition-colors"
+              >
+                {social}
+              </a>
+            ))}
+          </div>
+        </div>
+        <div className="mt-8 pt-8 border-t border-white/5 text-center text-sm text-white/30">
+          © 2024 RAGS Pro. All rights reserved. Made with ❤️ in Delhi.
+        </div>
       </div>
     </footer>
   );
 }
 
-// Main page
+// Main Page
 export default function Home() {
   return (
-    <main className="bg-[#050505] min-h-screen">
+    <main className="bg-[#050505] min-h-screen text-white">
       <CustomCursor />
       <Navigation />
       <Hero />
       <Stats />
       <Services />
       <Portfolio />
+      <Pricing />
       <About />
       <Contact />
       <Footer />
