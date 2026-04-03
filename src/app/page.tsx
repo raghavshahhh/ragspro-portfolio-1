@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { MessageCircle, ArrowUpRight, Zap, Brain, ShoppingCart, Check, Phone, Mail, MapPin, ExternalLink, ChevronRight, Play } from "lucide-react";
+import { MessageCircle, ArrowUpRight, Clock, UserX, Repeat, TrendingUp, Check, Phone, Mail, MapPin, ChevronRight, Play, Calendar, Sparkles, Shield } from "lucide-react";
 import { ragsProContent } from "@/lib/utils";
 
 const WA_GREEN = "#25D366";
@@ -64,34 +64,35 @@ function Navigation() {
       transition={{ duration: 0.8, delay: 0.5 }}
       className={`nav-fixed flex items-center justify-between ${scrolled ? "scrolled" : ""}`}
     >
-      <a href="#" className="text-xl font-bold tracking-tight flex items-center gap-2">
-        <span className="text-[#25D366]">●</span> RAGS
+      <a href="#" className="flex items-center gap-2">
+        <span className="text-2xl font-bold">RAGS</span>
+        <span className="text-xs text-white/40 uppercase tracking-wider border border-white/20 px-2 py-0.5 rounded">PRO</span>
       </a>
       <div className="hidden md:flex items-center gap-8">
-        {["Services", "Work", "Pricing", "About"].map((item) => (
+        {["Services", "Results", "Pricing", "FAQ"].map((item) => (
           <a
             key={item}
             href={`#${item.toLowerCase()}`}
-            className="text-xs uppercase tracking-widest text-white/60 hover:text-white transition-colors"
+            className="text-sm text-white/60 hover:text-white transition-colors"
           >
             {item}
           </a>
         ))}
       </div>
       <a
-        href={`https://wa.me/${ragsProContent.contact.phone.replace(/\D/g, "")}`}
+        href={ragsProContent.brand.whatsappLink}
         target="_blank"
         rel="noopener noreferrer"
-        className="btn-outline hidden md:flex items-center gap-2"
+        className="btn-primary hidden md:flex items-center gap-2 text-sm"
       >
         <MessageCircle className="w-4 h-4" />
-        <span>Chat on WhatsApp</span>
+        <span>Get Demo</span>
       </a>
     </motion.nav>
   );
 }
 
-// Hero with WhatsApp focus
+// Hero Section
 function Hero() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
@@ -110,217 +111,191 @@ function Hero() {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative min-h-screen overflow-hidden flex items-center">
-      {/* Background Effects */}
-      <div
-        className="absolute inset-0 parallax-layer"
-        style={{ transform: `translate(${mousePos.x * 0.5}px, ${mousePos.y * 0.5}px)` }}
-      >
-        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[#25D366]/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#25D366]/3 rounded-full blur-[100px]" />
+    <section ref={containerRef} className="relative min-h-screen overflow-hidden flex items-center pt-24 pb-12">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0B141A] via-[#050505] to-[#050505]" />
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[#25D366]/10 rounded-full blur-[150px]" />
       </div>
 
-      {/* WhatsApp Chat Mockup floating */}
-      <motion.div
-        className="absolute right-[5%] top-1/2 -translate-y-1/2 hidden xl:block"
-        initial={{ opacity: 0, x: 100 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1, delay: 0.8 }}
-        style={{ transform: `translate(${mousePos.x * -2}px, ${mousePos.y * -2}px)` }}
-      >
-        <div className="w-[380px] bg-[#0B141A] rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
-          {/* Chat Header */}
-          <div className="bg-[#202C33] p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center">
-              <MessageCircle className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <div className="text-sm font-medium">RAGS Bot</div>
-              <div className="text-xs text-white/50">online</div>
-            </div>
-          </div>
-          {/* Chat Messages */}
-          <div className="p-4 space-y-3 min-h-[300px]">
+      <div className="relative z-10 w-full px-6 md:px-12 lg:px-24">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Content */}
+          <div>
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2 }}
-              className="bg-[#202C33] rounded-lg rounded-tl-none p-3 max-w-[85%]"
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="mb-6"
             >
-              <p className="text-sm">Hello! 👋 Welcome to our store. How can I help you today?</p>
-              <span className="text-[10px] text-white/40 float-right mt-1">10:30 AM</span>
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#25D366]/10 border border-[#25D366]/20 text-[#25D366] text-sm">
+                <span className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse" />
+                Now accepting projects for April
+              </span>
             </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
+
+            <motion.h1
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.8 }}
-              className="bg-[#005C4B] rounded-lg rounded-tr-none p-3 max-w-[85%] ml-auto"
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6"
             >
-              <p className="text-sm">I want to order dog food</p>
-              <span className="text-[10px] text-white/40 float-right mt-1">10:31 AM</span>
+              {ragsProContent.hero.headline}
+              <br />
+              <span className="text-[#25D366]">{ragsProContent.hero.headlineHighlight}</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="text-lg text-white/60 mb-8 max-w-lg"
+            >
+              {ragsProContent.hero.description}
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="flex flex-wrap gap-4 mb-8"
+            >
+              <a
+                href={ragsProContent.brand.whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary flex items-center gap-2"
+              >
+                <MessageCircle className="w-5 h-5" />
+                <span>{ragsProContent.hero.ctaPrimary}</span>
+              </a>
+              <a href="#services" className="btn-outline flex items-center gap-2">
+                <Play className="w-4 h-4" />
+                <span>{ragsProContent.hero.ctaSecondary}</span>
+              </a>
             </motion.div>
+
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 2.4 }}
-              className="bg-[#202C33] rounded-lg rounded-tl-none p-3 max-w-[85%]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="flex items-center gap-6 text-sm text-white/40"
             >
-              <p className="text-sm">Great choice! 🐕 Here&apos;s our menu:</p>
-              <div className="mt-2 space-y-2">
-                <div className="bg-white/5 rounded p-2 flex justify-between">
-                  <span className="text-xs">Premium Dog Food</span>
-                  <span className="text-xs text-[#25D366]">₹999</span>
+              {ragsProContent.hero.stats.map((stat) => (
+                <div key={stat.label} className="flex items-center gap-2">
+                  <span className="text-[#25D366] font-bold">{stat.value}</span>
+                  <span>{stat.label}</span>
                 </div>
-                <div className="bg-white/5 rounded p-2 flex justify-between">
-                  <span className="text-xs">Organic Treats</span>
-                  <span className="text-xs text-[#25D366]">₹499</span>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Right Content - Chat Demo */}
+          <motion.div
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.8 }}
+            className="hidden lg:block"
+          >
+            <div className="relative mx-auto max-w-sm">
+              {/* Phone Frame */}
+              <div className="bg-[#0B141A] rounded-[2.5rem] border-4 border-[#202C33] overflow-hidden shadow-2xl">
+                {/* Chat Header */}
+                <div className="bg-[#202C33] px-4 py-4 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center">
+                    <MessageCircle className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium">PuppyChef Bot</div>
+                    <div className="text-xs text-[#25D366]">online</div>
+                  </div>
+                </div>
+                {/* Chat Messages */}
+                <div className="p-4 space-y-3 min-h-[400px] bg-[#0B141A]">
+                  {ragsProContent.hero.chatDemo.messages.map((msg, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 1 + idx * 0.3 }}
+                      className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+                    >
+                      <div
+                        className={`max-w-[85%] p-3 rounded-lg text-sm ${
+                          msg.sender === "user"
+                            ? "bg-[#005C4B] rounded-tr-none"
+                            : "bg-[#202C33] rounded-tl-none"
+                        }`}
+                      >
+                        <p className="whitespace-pre-line">{msg.text}</p>
+                        <span className="text-[10px] text-white/40 float-right mt-1 ml-2">{msg.time}</span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+                {/* Input */}
+                <div className="bg-[#202C33] p-3 flex items-center gap-2">
+                  <div className="flex-1 bg-[#2A3942] rounded-full px-4 py-2 text-sm text-white/40">
+                    Type a message...
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center">
+                    <MessageCircle className="w-5 h-5 text-white" />
+                  </div>
                 </div>
               </div>
-              <span className="text-[10px] text-white/40 float-right mt-1">10:31 AM</span>
-            </motion.div>
-          </div>
-          {/* Input */}
-          <div className="bg-[#202C33] p-3 flex items-center gap-2">
-            <div className="flex-1 bg-[#2A3942] rounded-full px-4 py-2 text-sm text-white/50">Type a message...</div>
-            <div className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center">
-              <MessageCircle className="w-5 h-5 text-white" />
             </div>
-          </div>
+          </motion.div>
         </div>
-      </motion.div>
-
-      <div className="relative z-10 px-6 md:px-12 lg:px-24 max-w-4xl">
-        {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mb-6"
-        >
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#25D366]/10 border border-[#25D366]/20 text-[#25D366] text-xs uppercase tracking-wider">
-            <span className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse" />
-            Now Accepting New Projects
-          </span>
-        </motion.div>
-
-        {/* Main Headline */}
-        <motion.h1
-          initial={{ opacity: 0, y: 60 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="headline-xl mb-6"
-        >
-          Turn WhatsApp
-          <br />
-          <span className="text-[#25D366]">Conversations</span>
-          <br />
-          Into Revenue
-        </motion.h1>
-
-        {/* Description */}
-        <motion.p
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-lg md:text-xl text-white/60 max-w-xl mb-8"
-        >
-          AI-powered WhatsApp bots that handle sales, support, and automation
-          24/7 for your business. Built for founders who want to scale.
-        </motion.p>
-
-        {/* CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="flex flex-wrap gap-4"
-        >
-          <a
-            href={`https://wa.me/${ragsProContent.contact.phone.replace(/\D/g, "")}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary flex items-center gap-2"
-          >
-            <MessageCircle className="w-5 h-5" />
-            <span>Start on WhatsApp</span>
-          </a>
-          <a href="#work" className="btn-outline flex items-center gap-2">
-            <Play className="w-4 h-4" />
-            <span>See Demo</span>
-          </a>
-        </motion.div>
-
-        {/* Trust badges */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 1 }}
-          className="mt-12 flex items-center gap-8"
-        >
-          <div>
-            <div className="text-2xl font-bold text-[#25D366]">25+</div>
-            <div className="text-xs text-white/40">Bots Delivered</div>
-          </div>
-          <div className="w-px h-10 bg-white/10" />
-          <div>
-            <div className="text-2xl font-bold text-[#25D366]">3x</div>
-            <div className="text-xs text-white/40">Avg. Sales Boost</div>
-          </div>
-          <div className="w-px h-10 bg-white/10" />
-          <div>
-            <div className="text-2xl font-bold text-[#25D366]">24/7</div>
-            <div className="text-xs text-white/40">Auto Support</div>
-          </div>
-        </motion.div>
       </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-12 left-1/2 -translate-x-1/2"
-      >
-        <div className="scroll-indicator">
-          <span>Scroll</span>
-          <div className="scroll-line" />
-        </div>
-      </motion.div>
     </section>
   );
 }
 
-// Stats Section
-function Stats() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
-      { threshold: 0.3 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
+// Pain Points Section
+function PainPoints() {
   return (
-    <section ref={ref} className="py-24 px-6 md:px-12 lg:px-24 border-t border-white/10">
+    <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#0B141A]">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {ragsProContent.about.stats.map((stat, index) => (
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">{ragsProContent.painPoints.headline}</h2>
+          <p className="text-white/50 max-w-xl mx-auto">{ragsProContent.painPoints.subheadline}</p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {ragsProContent.painPoints.problems.map((problem, idx) => (
             <motion.div
-              key={stat.label}
+              key={problem.title}
               initial={{ opacity: 0, y: 30 }}
-              animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="text-center"
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              className="bg-[#050505] border border-white/5 rounded-2xl p-6 hover:border-[#25D366]/20 transition-colors"
             >
-              <div className="text-4xl md:text-5xl font-bold text-[#25D366] mb-2">{stat.value}</div>
-              <div className="text-xs uppercase tracking-widest text-white/50">{stat.label}</div>
+              <div className="w-12 h-12 rounded-xl bg-[#25D366]/10 flex items-center justify-center mb-4">
+                {problem.icon === "Clock" && <Clock className="w-6 h-6 text-[#25D366]" />}
+                {problem.icon === "UserX" && <UserX className="w-6 h-6 text-[#25D366]" />}
+                {problem.icon === "Repeat" && <Repeat className="w-6 h-6 text-[#25D366]" />}
+                {problem.icon === "Scale" && <TrendingUp className="w-6 h-6 text-[#25D366]" />}
+              </div>
+              <h3 className="font-semibold mb-2">{problem.title}</h3>
+              <p className="text-sm text-white/50">{problem.description}</p>
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center mt-12"
+        >
+          <p className="text-[#25D366] font-medium">{ragsProContent.painPoints.solution}</p>
+        </motion.div>
       </div>
     </section>
   );
@@ -328,49 +303,48 @@ function Stats() {
 
 // Services Section
 function Services() {
-  const services = ragsProContent.services;
-
   return (
-    <section id="services" className="py-32 px-6 md:px-12 lg:px-24">
+    <section id="services" className="py-24 px-6 md:px-12 lg:px-24">
       <div className="max-w-7xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 60 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mb-16 text-center"
+          className="text-center mb-16"
         >
-          <span className="text-xs uppercase tracking-[0.3em] text-[#25D366] block mb-4">What We Do</span>
-          <h2 className="headline-lg">WhatsApp Solutions</h2>
+          <span className="text-[#25D366] text-sm uppercase tracking-wider mb-4 block">Our Services</span>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">{ragsProContent.services.headline}</h2>
+          <p className="text-white/50 max-w-xl mx-auto">{ragsProContent.services.subheadline}</p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {services.map((service, index) => (
+          {ragsProContent.services.items.map((service, idx) => (
             <motion.div
               key={service.title}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="service-card bg-[#0B141A] border border-white/10 rounded-2xl p-8 group hover:border-[#25D366]/30 transition-all duration-500"
+              transition={{ delay: idx * 0.1 }}
+              className="group bg-[#0B141A] border border-white/5 rounded-2xl p-8 hover:border-[#25D366]/30 transition-all"
             >
               <div className="flex items-start justify-between mb-6">
-                <span className="text-xs text-[#25D366]/60">0{index + 1}</span>
+                <span className="text-[#25D366]/40 text-sm">{service.number}</span>
                 <div className="w-12 h-12 rounded-xl bg-[#25D366]/10 flex items-center justify-center group-hover:bg-[#25D366]/20 transition-colors">
-                  {service.icon === "MessageCircle" && <MessageCircle className="w-6 h-6 text-[#25D366]" />}
-                  {service.icon === "Zap" && <Zap className="w-6 h-6 text-[#25D366]" />}
-                  {service.icon === "Brain" && <Brain className="w-6 h-6 text-[#25D366]" />}
-                  {service.icon === "ShoppingCart" && <ShoppingCart className="w-6 h-6 text-[#25D366]" />}
+                  <MessageCircle className="w-6 h-6 text-[#25D366]" />
                 </div>
               </div>
-              <h3 className="text-2xl font-bold mb-3 group-hover:text-[#25D366] transition-colors">{service.title}</h3>
-              <p className="text-white/50 mb-6 leading-relaxed">{service.description}</p>
-              <div className="flex flex-wrap gap-2">
-                {(service as any).features?.map((feature: string) => (
+              <h3 className="text-xl font-bold mb-3 group-hover:text-[#25D366] transition-colors">{service.title}</h3>
+              <p className="text-white/60 mb-4">{service.description}</p>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {service.features.map((feature) => (
                   <span key={feature} className="px-3 py-1 rounded-full bg-white/5 text-xs text-white/60">
                     {feature}
                   </span>
                 ))}
+              </div>
+              <div className="pt-4 border-t border-white/5">
+                <p className="text-xs text-white/40 mb-1">Best for: {service.bestFor}</p>
+                <p className="text-sm text-[#25D366]">{service.result}</p>
               </div>
             </motion.div>
           ))}
@@ -380,55 +354,93 @@ function Services() {
   );
 }
 
-// Portfolio Section
-function Portfolio() {
+// Process Section
+function Process() {
   return (
-    <section id="work" className="py-32 px-6 md:px-12 lg:px-24 bg-[#0B141A]/50">
+    <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#0B141A]">
       <div className="max-w-7xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 60 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mb-16"
+          className="text-center mb-16"
         >
-          <span className="text-xs uppercase tracking-[0.3em] text-[#25D366] block mb-4">Our Work</span>
-          <h2 className="headline-lg">Featured Projects</h2>
+          <span className="text-[#25D366] text-sm uppercase tracking-wider mb-4 block">Our Process</span>
+          <h2 className="text-3xl md:text-4xl font-bold">{ragsProContent.process.headline}</h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {ragsProContent.portfolio.map((project, index) => (
+        <div className="grid md:grid-cols-4 gap-6">
+          {ragsProContent.process.steps.map((step, idx) => (
             <motion.div
-              key={project.title}
-              initial={{ opacity: 0, y: 40 }}
+              key={step.number}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group relative bg-[#050505] rounded-2xl overflow-hidden border border-white/10 hover:border-[#25D366]/30 transition-all duration-500"
+              transition={{ delay: idx * 0.1 }}
+              className="relative"
             >
-              <div className="aspect-video bg-gradient-to-br from-[#25D366]/10 to-transparent flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-6xl font-bold text-white/5">{project.title[0]}</div>
+              <div className="bg-[#050505] border border-white/5 rounded-2xl p-6 h-full">
+                <div className="text-4xl font-bold text-[#25D366]/20 mb-4">{step.number}</div>
+                <h3 className="font-semibold mb-2">{step.title}</h3>
+                <p className="text-sm text-white/50 mb-4">{step.description}</p>
+                <span className="text-xs text-[#25D366]">{step.timeline}</span>
+              </div>
+              {idx < 3 && (
+                <div className="hidden md:block absolute top-1/2 -right-3 w-6 h-px bg-[#25D366]/30" />
+              )}
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Case Studies Section
+function CaseStudies() {
+  return (
+    <section id="results" className="py-24 px-6 md:px-12 lg:px-24">
+      <div className="max-w-7xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <span className="text-[#25D366] text-sm uppercase tracking-wider mb-4 block">Case Studies</span>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">{ragsProContent.caseStudies.headline}</h2>
+          <p className="text-white/50">{ragsProContent.caseStudies.subheadline}</p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {ragsProContent.caseStudies.items.map((study, idx) => (
+            <motion.div
+              key={study.client}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              className="bg-[#0B141A] border border-white/5 rounded-2xl p-6"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="font-bold text-lg">{study.client}</h3>
+                  <p className="text-xs text-white/50">{study.industry}</p>
                 </div>
               </div>
-              <div className="p-8">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-xs text-[#25D366]">{project.category}</span>
-                  <ExternalLink className="w-4 h-4 text-white/30 group-hover:text-[#25D366] transition-colors" />
-                </div>
-                <h3 className="text-2xl font-bold mb-3">{project.title}</h3>
-                <p className="text-white/50 mb-6">{project.description}</p>
-                {(project as any).stats && (
-                  <div className="flex gap-6">
-                    {Object.entries((project as any).stats).map(([key, value]) => (
-                      <div key={key}>
-                        <div className="text-lg font-bold text-[#25D366]">{value as string}</div>
-                        <div className="text-xs text-white/40 capitalize">{key}</div>
-                      </div>
-                    ))}
+              <p className="text-sm text-white/60 mb-4">{study.solution}</p>
+              <div className="grid grid-cols-3 gap-2 mb-4">
+                {study.results.map((result) => (
+                  <div key={result.label} className="text-center p-2 bg-[#050505] rounded-lg">
+                    <div className="text-lg font-bold text-[#25D366]">{result.metric}</div>
+                    <div className="text-[10px] text-white/50">{result.label}</div>
                   </div>
-                )}
+                ))}
               </div>
+              <blockquote className="text-sm text-white/70 italic border-l-2 border-[#25D366] pl-3">
+                "{study.quote}"
+              </blockquote>
+              <p className="text-xs text-white/40 mt-2">— {study.author}</p>
             </motion.div>
           ))}
         </div>
@@ -440,60 +452,59 @@ function Portfolio() {
 // Pricing Section
 function Pricing() {
   return (
-    <section id="pricing" className="py-32 px-6 md:px-12 lg:px-24">
+    <section id="pricing" className="py-24 px-6 md:px-12 lg:px-24 bg-[#0B141A]">
       <div className="max-w-7xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 60 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mb-16 text-center"
+          className="text-center mb-16"
         >
-          <span className="text-xs uppercase tracking-[0.3em] text-[#25D366] block mb-4">Pricing</span>
-          <h2 className="headline-lg">Simple Pricing</h2>
-          <p className="text-white/50 mt-4 max-w-xl mx-auto">One-time payment. No monthly fees. You own the bot.</p>
+          <span className="text-[#25D366] text-sm uppercase tracking-wider mb-4 block">Pricing</span>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">{ragsProContent.pricing.headline}</h2>
+          <p className="text-white/50">{ragsProContent.pricing.subheadline}</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {ragsProContent.pricing?.map((plan, index) => (
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
+          {ragsProContent.pricing.plans.map((plan, idx) => (
             <motion.div
               key={plan.name}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className={`relative rounded-2xl p-8 ${
+              transition={{ delay: idx * 0.1 }}
+              className={`relative rounded-2xl p-6 ${
                 plan.popular
                   ? "bg-[#25D366]/10 border-2 border-[#25D366]"
-                  : "bg-[#0B141A] border border-white/10"
+                  : "bg-[#050505] border border-white/5"
               }`}
             >
               {plan.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-[#25D366] rounded-full text-xs font-medium">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#25D366] rounded-full text-xs font-medium text-black">
                   Most Popular
                 </div>
               )}
-              <div className="mb-6">
-                <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
+              <div className="mb-4">
+                <h3 className="font-bold text-lg">{plan.name}</h3>
                 <p className="text-sm text-white/50">{plan.description}</p>
               </div>
               <div className="mb-6">
                 <span className="text-4xl font-bold">{plan.price}</span>
-                <span className="text-white/50 text-sm ml-2">/{plan.period}</span>
+                {plan.price !== "Custom" && <span className="text-white/50 text-sm ml-1">one-time</span>}
               </div>
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-2 mb-6">
                 {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-center gap-3 text-sm text-white/70">
-                    <Check className="w-4 h-4 text-[#25D366] flex-shrink-0" />
-                    {feature}
+                  <li key={feature} className="flex items-start gap-2 text-sm">
+                    <Check className="w-4 h-4 text-[#25D366] flex-shrink-0 mt-0.5" />
+                    <span className="text-white/70">{feature}</span>
                   </li>
                 ))}
               </ul>
               <a
-                href={`https://wa.me/${ragsProContent.contact.phone.replace(/\D/g, "")}?text=Hi! I'm interested in the ${plan.name} plan`}
+                href={ragsProContent.brand.whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`block text-center py-4 rounded-xl font-medium transition-all ${
+                className={`block text-center py-3 rounded-xl font-medium transition-all ${
                   plan.popular
                     ? "bg-[#25D366] text-black hover:bg-[#25D366]/90"
                     : "bg-white/10 text-white hover:bg-white/20"
@@ -504,110 +515,93 @@ function Pricing() {
             </motion.div>
           ))}
         </div>
+
+        {/* FAQ */}
+        <div className="max-w-2xl mx-auto">
+          <h3 className="text-center font-semibold mb-6">Frequently Asked Questions</h3>
+          <div className="space-y-4">
+            {ragsProContent.pricing.faq.map((item, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="bg-[#050505] border border-white/5 rounded-xl p-4"
+              >
+                <h4 className="font-medium mb-2">{item.question}</h4>
+                <p className="text-sm text-white/60">{item.answer}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        <p className="text-center text-xs text-white/40 mt-8">{ragsProContent.pricing.note}</p>
       </div>
     </section>
   );
 }
 
-// About Section
-function About() {
+// Trust Section
+function Trust() {
   return (
-    <section id="about" className="py-32 px-6 md:px-12 lg:px-24 border-t border-white/10">
+    <section className="py-24 px-6 md:px-12 lg:px-24">
       <div className="max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <motion.div
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <span className="text-xs uppercase tracking-[0.3em] text-[#25D366] block mb-4">About Us</span>
-            <h2 className="headline-lg mb-6">{ragsProContent.about.title}</h2>
-            <p className="text-white/60 text-lg leading-relaxed mb-6">{ragsProContent.about.description}</p>
-            <div className="flex flex-wrap gap-4">
-              {["WhatsApp API", "AI Integration", "Business Automation", "E-Commerce"].map((tag) => (
-                <span key={tag} className="px-4 py-2 rounded-full bg-[#25D366]/10 text-[#25D366] text-sm">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">{ragsProContent.trust.headline}</h2>
+        </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="relative"
-          >
-            <div className="aspect-square bg-[#0B141A] rounded-2xl border border-white/10 p-8 flex items-center justify-center">
-              <div className="text-center">
-                <div className="w-24 h-24 rounded-full bg-[#25D366]/10 flex items-center justify-center mx-auto mb-6">
-                  <MessageCircle className="w-12 h-12 text-[#25D366]" />
-                </div>
-                <div className="text-2xl font-bold mb-2">RAGS</div>
-                <div className="text-sm text-white/50">WhatsApp Automation Agency</div>
-                <div className="text-xs text-white/30 mt-4">Delhi, India</div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {ragsProContent.trust.reasons.map((reason, idx) => (
+            <motion.div
+              key={reason.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              className="text-center"
+            >
+              <div className="w-12 h-12 rounded-xl bg-[#25D366]/10 flex items-center justify-center mx-auto mb-4">
+                <Shield className="w-6 h-6 text-[#25D366]" />
               </div>
-            </div>
-          </motion.div>
+              <h3 className="font-semibold mb-2">{reason.title}</h3>
+              <p className="text-sm text-white/50">{reason.description}</p>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
   );
 }
 
-// Contact Section
-function Contact() {
+// CTA Section
+function CTA() {
   return (
-    <section id="contact" className="py-32 px-6 md:px-12 lg:px-24 bg-[#0B141A]">
+    <section className="py-24 px-6 md:px-12 lg:px-24 bg-[#0B141A]">
       <div className="max-w-4xl mx-auto text-center">
         <motion.div
-          initial={{ opacity: 0, y: 60 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
         >
-          <span className="text-xs uppercase tracking-[0.3em] text-[#25D366] block mb-4">Get Started</span>
-          <h2 className="headline-lg mb-6">
-            Ready to Automate
-            <br />
-            <span className="text-[#25D366]">Your Business?</span>
-          </h2>
-          <p className="text-white/50 mb-12 max-w-xl mx-auto">
-            Let&apos;s build a WhatsApp bot that works 24/7 for your business.
-            Get your first demo in 48 hours.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <a
-              href={`https://wa.me/${ragsProContent.contact.phone.replace(/\D/g, "")}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary inline-flex items-center justify-center gap-2 text-lg px-8 py-4"
-            >
-              <MessageCircle className="w-5 h-5" />
-              <span>Chat on WhatsApp</span>
-            </a>
-            <a
-              href={`mailto:${ragsProContent.contact.email}`}
-              className="btn-outline inline-flex items-center justify-center gap-2 px-8 py-4"
-            >
-              <Mail className="w-5 h-5" />
-              <span>Send Email</span>
-            </a>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-white/50">
-            <div className="flex items-center gap-2">
-              <Phone className="w-4 h-4" />
-              <span>{ragsProContent.contact.phone}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4" />
-              <span>{ragsProContent.contact.location}</span>
-            </div>
-          </div>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">{ragsProContent.cta.headline}</h2>
+          <p className="text-white/60 mb-4 max-w-xl mx-auto">{ragsProContent.cta.subheadline}</p>
+          <p className="text-sm text-white/40 mb-8">{ragsProContent.cta.offer}</p>
+          <a
+            href={ragsProContent.brand.whatsappLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary inline-flex items-center gap-2 text-lg px-8 py-4"
+          >
+            <Calendar className="w-5 h-5" />
+            <span>{ragsProContent.cta.button}</span>
+          </a>
+          <p className="text-sm text-white/40 mt-6">{ragsProContent.cta.alternative}</p>
         </motion.div>
       </div>
     </section>
@@ -617,28 +611,24 @@ function Contact() {
 // Footer
 function Footer() {
   return (
-    <footer className="py-12 px-6 md:px-12 lg:px-24 border-t border-white/10">
+    <footer className="py-12 px-6 md:px-12 lg:px-24 border-t border-white/5">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
           <div className="flex items-center gap-2">
-            <span className="text-[#25D366]">●</span>
-            <span className="font-bold">RAGS</span>
-            <span className="text-white/40">| WhatsApp Automation Agency</span>
+            <span className="text-xl font-bold">RAGS</span>
+            <span className="text-xs text-white/40 uppercase tracking-wider border border-white/20 px-2 py-0.5 rounded">PRO</span>
+            <span className="text-sm text-white/40 ml-4">{ragsProContent.footer.tagline}</span>
           </div>
           <div className="flex items-center gap-6">
-            {["Twitter", "LinkedIn", "GitHub"].map((social) => (
-              <a
-                key={social}
-                href="#"
-                className="text-xs uppercase tracking-widest text-white/40 hover:text-[#25D366] transition-colors"
-              >
+            {["Twitter", "LinkedIn", "Instagram"].map((social) => (
+              <a key={social} href="#" className="text-sm text-white/40 hover:text-[#25D366] transition-colors">
                 {social}
               </a>
             ))}
           </div>
         </div>
-        <div className="mt-8 pt-8 border-t border-white/5 text-center text-sm text-white/30">
-          © 2024 RAGS Pro. All rights reserved. Made with ❤️ in Delhi.
+        <div className="text-center text-sm text-white/30">
+          © 2024 {ragsProContent.brand.fullName}. All rights reserved. Made in Delhi.
         </div>
       </div>
     </footer>
@@ -652,12 +642,13 @@ export default function Home() {
       <CustomCursor />
       <Navigation />
       <Hero />
-      <Stats />
+      <PainPoints />
       <Services />
-      <Portfolio />
+      <Process />
+      <CaseStudies />
       <Pricing />
-      <About />
-      <Contact />
+      <Trust />
+      <CTA />
       <Footer />
     </main>
   );
